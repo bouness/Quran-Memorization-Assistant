@@ -76,52 +76,14 @@ jobs:
         path: installer_output/QMAInstaller.exe
         retention-days: 1
 
-  build-linux:
-    name: Build for Linux
-    runs-on: ubuntu-latest
-
-    env:
-      VERSION: ${{ github.ref_name }}
-
-    steps:
-      - name: 📥 Checkout repository
-        uses: actions/checkout@v4
-
-      - name: 🔧 Install build tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libssl-dev libffi-dev python3-dev
-
-      - name: 🐍 Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-
-      - name: 📦 Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      - name: 🛠️ Build with Nuitka
-        run: |
-          chmod +x ./build.sh
-          ./build.sh
-
-      - name: 📤 Upload Linux package
-        uses: actions/upload-artifact@v4
-        with:
-          name: QMA-Linux-Package
-          path: QMA-linux.tar.gz
-          retention-days: 1
-
   release:
     name: 📦 Create GitHub Release
-    needs: [build-windows, build-linux]
+    needs: build-windows
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
 
     steps:
-    - name: 📥 Download all artifacts
+    - name: 📥 Download artifacts
       uses: actions/download-artifact@v4
       with:
         path: artifacts
@@ -132,10 +94,7 @@ jobs:
         find artifacts -type f | sort
         echo "=== Moving files to release directory ==="
         mkdir -p release
-        # Copy Windows installer (using the exact name from Inno Setup)
         find artifacts -name "QMAInstaller.exe" -exec cp {} release/ \;
-        # Copy Linux package
-        find artifacts -name "QMA-linux.tar.gz" -exec cp {} release/ \;
         echo "=== Release files ==="
         ls -la release/
 
@@ -146,20 +105,16 @@ jobs:
         name: QMA ${{ github.ref_name }}
         body: |
           Automated release for QMA ${{ github.ref_name }}
-          
+
           **What's included:**
           - Windows Installer (QMAInstaller.exe)
-          - Linux Package (QMA-linux.tar.gz)
-          
+
           **Installation:**
-          - **Windows**: Run `QMAInstaller.exe` to install the application
-          - **Linux**: Extract `tar -xzf QMA-linux.tar.gz` and in directory run `sudo ./installer/install.sh`
-          
+          - Run `QMAInstaller.exe` to install the application.
+
           **Uninstallation:**
-          - **Windows**: Uninstall the application like any other applications
-          - **Linux**: `cd /opt/QMA && sudo ./uninstall.sh`
+          - Uninstall the application like any other Windows application.
         files: |
           release/QMAInstaller.exe
-          release/QMA-linux.tar.gz
         draft: false
         prerelease: false
