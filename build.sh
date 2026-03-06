@@ -1,21 +1,19 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -e
 
-echo "🧹 Cleaning previous builds..."
-rm -rf dist build installer_output
+# === Clean previous builds ===
+rm -rf dist build package
+rm -f QMA-linux.tar.gz
+mkdir -p dist
 
-# Create installer output directory
-mkdir -p installer_output
-
-echo "📦 Installing Python dependencies..."
+# === Install application dependencies ===
 python3 -m pip install --upgrade pip
-pip3 install -r requirements.txt
+pip install -r requirements.txt
 
-echo "🔧 Installing Nuitka..."
-pip3 install nuitka
+# === Install build tool (Nuitka) ===
+pip install nuitka
 
-echo "🏗️ Building application with Nuitka..."
-
+# === Build with Nuitka ===
 python3 -m nuitka \
     --standalone \
     --assume-yes-for-downloads \
@@ -26,17 +24,18 @@ python3 -m nuitka \
     --output-dir=dist \
     app.py
 
-echo "✅ Nuitka build complete!"
+# === Make executable permissions ===
+chmod +x dist/app.dist/app.bin
 
-# Verify build output
-if [ -d "dist/app.dist" ]; then
-    echo "✅ Build created successfully!"
-    echo "📦 Build location: dist/app.dist"
-    du -sh dist/app.dist
-else
-    echo "❌ ERROR: Build output not found"
-    ls -la dist || true
-    exit 1
-fi
 
-echo "🎉 Linux build process completed successfully!"
+
+# === Create tarball ===
+echo "Creating distribution tarball..."
+tar -czf QMA-linux.tar.gz -C package QMA
+
+echo
+echo "✅ Linux build complete!"
+echo "Created: QMA-linux.tar.gz"
+echo "To install:"
+echo "  1. tar -xzf QMA-linux.tar.gz"
+echo "  2. sudo ./QMA/installer/install.sh"
