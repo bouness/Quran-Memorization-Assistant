@@ -1,0 +1,62 @@
+{
+  "window": {
+      "title": "Quran Memorization Assistant"
+  },
+  "settings": {
+      "audio_path": "Audio Path:",
+      "select_audio_path": "Select Audio Directory",
+      "path_updated": "Path Updated",
+      "path_updated_msg": "Audio path updated successfully"
+  },
+  "menu": {
+      "help": "Help",
+      "about": "About",
+      "file": "File",
+      "theme": "Theme",
+      "language": "Language"
+  },
+  "theme": {
+      "dark": "Dark Mode",
+      "light": "Light Mode"
+  },
+  "label": {
+      "audio_dir": "Audio Dir:",
+      "language": "Language:",
+      "chapter": "Chapter:",
+      "reciter": "Reciter:",
+      "start_verse": "Start Verse:",
+      "end_verse": "End Verse:",
+      "font_size": "Font Size:",
+      "repetitions": "Repetitions:"
+  },
+  "button": {
+      "play": "Start Listening",
+      "stop": "Stop Listening",
+      "font_increase": "A+",
+      "font_decrease": "A-"
+  },
+  "group": {
+      "settings": "Playback Settings",
+      "subtitle": "Current Verse"
+  },
+  "languages": {
+      "en": "English",
+      "ar": "Arabic"
+  },
+  "quran_languages": {
+    "ar": "Arabic",
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French"
+  },
+  "help": {
+    "title": "Help",
+    "about": "<h2>Quran Memorization Assistant</h2><p>Version: 1.0.0</p><p>Created by: Youness Fael Khair</p><p>License: MIT Open Source</p>",
+    "instructions": "<h3>How to Use</h3><ol><li>Select language</li><li>Select chapter</li><li>Input starting verse</li><li>Input ending verse</li><li>Input number of repeats</li><li>Click 'Start Listening' to start</li><li>Click 'A+' to increase font size</li><li>Click 'A-' to decrease font size</li><li>Click 'Start Listening' to stop</li></ol>",
+    "audio_files": "<h3>Additional Audio Files</h3><p>Download audio files from:<br>Link: <a href='https://everyayah.com/recitations_ayat.html'>Every Ayah Download Page</a></p>URL: https://everyayah.com/recitations_ayat.html</p><p>Unzip/Place audio files in: <code>audio</code> directory</p>"
+  },
+  "error": {
+      "no_reciters": "No reciters found. Please add folders to: %1"
+  }
+}
+

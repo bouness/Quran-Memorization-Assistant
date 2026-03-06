@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=QMA - Quran Memorization Assistant
+Comment=Quran Memorization Assistant
+Exec=QMA
+Icon=/opt/QMA/assets/icon.png
+Terminal=false
+Type=Application
+Categories=Education;Audio;
+Keywords=audio;quran;memorization;assistant;
+StartupWMClass=app
