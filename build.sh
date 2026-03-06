@@ -27,7 +27,13 @@ python3 -m nuitka \
 # === Make executable permissions ===
 chmod +x dist/app.dist/app.bin
 
-
+# === Prepare package directory ===
+echo "Preparing package..."
+mkdir -p package/QMA
+cp -r dist/app.dist/* package/QMA/
+cp -r assets package/QMA/ || true
+cp version.py package/QMA/ || true
+cp -r installer package/QMA/
 
 # === Create tarball ===
 echo "Creating distribution tarball..."
