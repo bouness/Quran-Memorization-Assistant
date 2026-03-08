@@ -35,7 +35,7 @@ The application plays Ayat audio to aid memorization. You need to provide your o
 ### Folder Structure
 
 *   Create a **root folder** for all your Quran audio, e.g., `~/MyQMAAudio` (on Linux/macOS) or `C:\MyQMAAudio` (on Windows).
-*   Inside this root folder, create one **subfolder for each reciter** you want to use. Name the subfolder with the reciter's name (e.g., `Fares_Abaad`, `Mishary_Alafasy`).
+*   Inside this root folder, create one **subfolder for each reciter** you want to use. Name the subfolder with the reciter's name (e.g., `Fares_Abaad`, `Yassin_Al-Jazaery`).
 *   In each reciter subfolder, place the audio files exactly as downloaded from the source (usually named like `001001.mp3` for Surah 1, Ayah 1).
 
 Example structure:
@@ -45,7 +45,7 @@ Example structure:
 │   ├── 001001.mp3
 │   ├── 001002.mp3
 │   └── ...
-├── Mishary_Alafasy/
+├── Yassin_Al-Jazaery/
 │   ├── 001001.mp3
 │   ├── 001002.mp3
 │   └── ...
@@ -136,3 +136,4 @@ This project is licensed under the MIT License – see the [LICENSE](LICENSE) fi
 
 *   Audio files courtesy of [EveryAyah.com](https://everyayah.com).
 *   Built with Python and its amazing ecosystem.
+
