@@ -1,4 +1,4 @@
-name: Build and Release Quran Memorization Assistant
+name: Build and Release QMA
 
 on:
   push:
@@ -12,6 +12,7 @@ jobs:
 
     env:
       VERSION: ${{ github.ref_name }}
+      ISCC_PATH: "C:\\Program Files (x86)\\Inno Setup 6\\ISCC.exe"
 
     steps:
     - name: 📥 Checkout repository
@@ -22,65 +23,28 @@ jobs:
       with:
         python-version: '3.13'
 
-    - name: 📦 Install build dependencies
+    - name: 📦 Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        choco install mingw -y --no-progress
-        choco install innosetup -y --no-progress
-
-    - name: 🔍 Verify Inno Setup installation
-      shell: cmd
-      run: |
-        echo "Checking Inno Setup installation..."
-        if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
-          echo "✅ Inno Setup found"
-        ) else (
-          echo "❌ Inno Setup not found"
-          exit 1
-        )
+        choco install mingw -y
 
     - name: 🏗️ Build project and installer
-      shell: cmd
-      run: |
-        echo "=== Starting build process ==="
-        build.bat
-        echo "=== Build process completed ==="
-
-    - name: 🔍 Verify installer artifact
-      shell: pwsh
-      run: |
-        Write-Host "=== Verifying installer ==="
-        if (Test-Path "installer_output\QMAInstaller.exe") {
-          Write-Host "✅ Installer verified!"
-          $file = Get-Item "installer_output\QMAInstaller.exe"
-          Write-Host "File: $($file.FullName)"
-          Write-Host "Size: $('{0:N0}' -f $file.Length) bytes"
-        } else {
-          Write-Host "❌ Installer not found!"
-          Write-Host "Contents of installer_output directory:"
-          if (Test-Path "installer_output") {
-            Get-ChildItem "installer_output" -Recurse
-          } else {
-            Write-Host "installer_output directory doesn't exist"
-          }
-          Write-Host "Current directory contents:"
-          Get-ChildItem
-          exit 1
-        }
+      run: .\build.bat
 
     - name: 📤 Upload Windows installer
       uses: actions/upload-artifact@v4
       with:
-        name: QMAInstaller-Windows
+        name: QMAInstaller
         path: installer_output/QMAInstaller.exe
-        retention-days: 1
 
   release:
     name: 📦 Create GitHub Release
-    needs: build-windows
+    needs: [build-windows]
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/')
+
+    env:
+      VERSION: ${{ github.ref_name }}
 
     steps:
     - name: 📥 Download artifacts
@@ -88,33 +52,13 @@ jobs:
       with:
         path: artifacts
 
-    - name: 🗂️ Organize artifacts for release
-      run: |
-        echo "=== Downloaded artifacts structure ==="
-        find artifacts -type f | sort
-        echo "=== Moving files to release directory ==="
-        mkdir -p release
-        find artifacts -name "QMAInstaller.exe" -exec cp {} release/ \;
-        echo "=== Release files ==="
-        ls -la release/
+    - name: 🗂️ List downloaded files
+      run: ls -R artifacts
 
-    - name: 🚀 Create GitHub Release
+    - name: 🚀 Publish GitHub Release
       uses: softprops/action-gh-release@v2
       with:
-        tag_name: ${{ github.ref }}
-        name: QMA ${{ github.ref_name }}
-        body: |
-          Automated release for QMA ${{ github.ref_name }}
-
-          **What's included:**
-          - Windows Installer (QMAInstaller.exe)
-
-          **Installation:**
-          - Run `QMAInstaller.exe` to install the application.
-
-          **Uninstallation:**
-          - Uninstall the application like any other Windows application.
+        tag_name: ${{ env.VERSION }}
+        name: QMA ${{ env.VERSION }}
         files: |
-          release/QMAInstaller.exe
-        draft: false
-        prerelease: false
+          artifacts/QMAInstaller/QMAInstaller.exe
