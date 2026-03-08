@@ -62,7 +62,7 @@ Example structure:
 ### Loading Audio in the App
 
 *   **If you installed using the Windows installer:** You may also place reciter folders directly into the installation path under `assets/audio` (e.g., `C:\Program Files\QMA\assets\audio\Fares_Abaad`). The app will look there by default.
-*   **In the application:** Go to **Settings** and click the **"Browse"** button. Navigate to and select your **root audio folder** (e.g., `~/MyQMAAudio` or `C:\MyQMAAudio`). The app will automatically detect all reciter subfolders and allow you to switch between them.
+*   **In the application:** Go to **Audio Dir:** and click the **"Browse"** button. Navigate to and select your **root audio folder** (e.g., `~/MyQMAAudio` or `C:\MyQMAAudio`). The app will automatically detect all reciter subfolders and allow you to switch between them.
 
 > **Note:** The app does not scan individual reciter folders; you must point it to the parent folder that contains all reciter subfolders.
 
@@ -136,4 +136,5 @@ This project is licensed under the MIT License – see the [LICENSE](LICENSE) fi
 
 *   Audio files courtesy of [EveryAyah.com](https://everyayah.com).
 *   Built with Python and its amazing ecosystem.
+
 
